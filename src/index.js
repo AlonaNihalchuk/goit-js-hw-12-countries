@@ -1,8 +1,7 @@
 import './sass/main.scss';
 import '@pnotify/core/dist/PNotify.css';
 import '@pnotify/core/dist/BrightTheme.css';
-import { error } from '@pnotify/core';
-import { alert } from '@pnotify/core';
+import { error, alert } from '@pnotify/core';
 import API from './js/fetchCountries';
 import getRefs from './js/refs';
 import countryCardTpl from './templates/countryCard.hbs';
@@ -11,20 +10,22 @@ import debounce from 'lodash.debounce';
 
 function onSearch(e) {
   e.preventDefault();
+  refs.searchInput.setAttribute('placeholder', 'Entry country');
   refs.countryContainer.innerHTML = '';
-  const searchQuery = e.target.value;
+  const searchQuery = e.target.value.trim();
 
-  API.fetchCountries(searchQuery).then(renderCountries).catch(anotherError);
   if (!searchQuery) {
-    refs.countryContainer.innerHTML = '';
     return;
+  } else {
+    refs.searchInput.removeAttribute('placeholder');
+    API.fetchCountries(searchQuery).then(renderCountries).catch(anotherError);
   }
 }
 
 const refs = getRefs();
 
 function renderCountries(country) {
-  if (country.length >= 10) {
+  if (country.length >= 11) {
     onFetchError();
   }
   if (country.length >= 2 && country.length <= 10) {
