@@ -49,4 +49,4 @@ function anotherError() {
   });
 }
 
-refs.searchInput.addEventListener('input', debounce(onSearch, 1500));
+refs.searchInput.addEventListener('input', debounce(onSearch, 500));
